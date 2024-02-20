@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "signature_pdf.signature.apps.SignatureConfig"
+    "signature_pdf.web.apps.WebConfig"
 ]
 
 MIDDLEWARE = [

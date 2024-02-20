@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SignatureConfig(AppConfig):
+class WebConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'signature_pdf.signature'
+    name = 'signature_pdf.web'
