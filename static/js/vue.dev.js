@@ -1,9 +1,9 @@
 /**
 * vue v3.4.19
-* (c) 2018-present Yuxi (Evan) You and VueDev contributors
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
-var VueDev = (function (exports) {
+var Vue = (function (exports) {
   'use strict';
 
   function makeMap(str, expectsLowerCase) {
@@ -245,10 +245,10 @@ var VueDev = (function (exports) {
     return props;
   }
 
-  const HTML_TAGS = "html,body,includes,head,link,meta,style,title,address,article,aside,footer,header,hgroup,h1,h2,h3,h4,h5,h6,nav,section,div,dd,dl,dt,figcaption,figure,picture,hr,img,li,main,ol,p,pre,ul,a,b,abbr,bdi,bdo,br,cite,code,data,dfn,em,i,kbd,mark,q,rp,rt,ruby,s,samp,small,span,strong,sub,sup,time,u,var,wbr,area,audio,map,track,video,embed,object,param,source,canvas,script,noscript,del,ins,caption,col,colgroup,table,thead,tbody,td,th,tr,button,datalist,fieldset,form,input,label,legend,meter,optgroup,option,output,progress,select,textarea,details,dialog,menu,summary,template,blockquote,iframe,tfoot";
+  const HTML_TAGS = "html,body,base,head,link,meta,style,title,address,article,aside,footer,header,hgroup,h1,h2,h3,h4,h5,h6,nav,section,div,dd,dl,dt,figcaption,figure,picture,hr,img,li,main,ol,p,pre,ul,a,b,abbr,bdi,bdo,br,cite,code,data,dfn,em,i,kbd,mark,q,rp,rt,ruby,s,samp,small,span,strong,sub,sup,time,u,var,wbr,area,audio,map,track,video,embed,object,param,source,canvas,script,noscript,del,ins,caption,col,colgroup,table,thead,tbody,td,th,tr,button,datalist,fieldset,form,input,label,legend,meter,optgroup,option,output,progress,select,textarea,details,dialog,menu,summary,template,blockquote,iframe,tfoot";
   const SVG_TAGS = "svg,animate,animateMotion,animateTransform,circle,clipPath,color-profile,defs,desc,discard,ellipse,feBlend,feColorMatrix,feComponentTransfer,feComposite,feConvolveMatrix,feDiffuseLighting,feDisplacementMap,feDistantLight,feDropShadow,feFlood,feFuncA,feFuncB,feFuncG,feFuncR,feGaussianBlur,feImage,feMerge,feMergeNode,feMorphology,feOffset,fePointLight,feSpecularLighting,feSpotLight,feTile,feTurbulence,filter,foreignObject,g,hatch,hatchpath,image,line,linearGradient,marker,mask,mesh,meshgradient,meshpatch,meshrow,metadata,mpath,path,pattern,polygon,polyline,radialGradient,rect,set,solidcolor,stop,switch,symbol,text,textPath,title,tspan,unknown,use,view";
   const MATH_TAGS = "annotation,annotation-xml,maction,maligngroup,malignmark,math,menclose,merror,mfenced,mfrac,mfraction,mglyph,mi,mlabeledtr,mlongdiv,mmultiscripts,mn,mo,mover,mpadded,mphantom,mprescripts,mroot,mrow,ms,mscarries,mscarry,msgroup,msline,mspace,msqrt,msrow,mstack,mstyle,msub,msubsup,msup,mtable,mtd,mtext,mtr,munder,munderover,none,semantics";
-  const VOID_TAGS = "area,includes,br,col,embed,hr,img,input,link,meta,param,source,track,wbr";
+  const VOID_TAGS = "area,base,br,col,embed,hr,img,input,link,meta,param,source,track,wbr";
   const isHTMLTag = /* @__PURE__ */ makeMap(HTML_TAGS);
   const isSVGTag = /* @__PURE__ */ makeMap(SVG_TAGS);
   const isMathMLTag = /* @__PURE__ */ makeMap(MATH_TAGS);
@@ -1366,7 +1366,7 @@ var VueDev = (function (exports) {
     set value(newValue) {
       this._setter(newValue);
     }
-    // #region polyfill _dirty for backward compatibility third party code for VueDev <= 3.3.x
+    // #region polyfill _dirty for backward compatibility third party code for Vue <= 3.3.x
     get _dirty() {
       return this.effect.dirty;
     }
@@ -1753,7 +1753,7 @@ var VueDev = (function (exports) {
     [11]: "app warnHandler",
     [12]: "ref function",
     [13]: "async component loader",
-    [14]: "scheduler flush. This is likely a VueDev internals bug. Please open an issue at https://github.com/vuejs/core ."
+    [14]: "scheduler flush. This is likely a Vue internals bug. Please open an issue at https://github.com/vuejs/core ."
   };
   function callWithErrorHandling(fn, instance, type, args) {
     try {
@@ -12218,7 +12218,7 @@ Make sure to use the production build (*.prod.js) when deploying for production.
     [21]: "'<?' is allowed only in XML context.",
     [20]: `Unexpected null character.`,
     [22]: "Illegal '/' in tags.",
-    // VueDev-specific parse errors
+    // Vue-specific parse errors
     [23]: "Invalid end tag.",
     [24]: "Element is missing end tag.",
     [25]: "Interpolation end sign was not found.",
@@ -12269,7 +12269,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
       case "keep-alive":
         return KEEP_ALIVE;
       case "BaseTransition":
-      case "includes-transition":
+      case "base-transition":
         return BASE_TRANSITION;
     }
   }
@@ -12487,7 +12487,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
   const forAliasRE = /([\s\S]*?)\s+(?:in|of)\s+([\s\S]*)/;
 
   const defaultParserOptions = {
-    parseMode: "includes",
+    parseMode: "base",
     ns: 0,
     delimiters: [`{{`, `}}`],
     getNamespace: () => 0,
@@ -13691,7 +13691,7 @@ Use a v-bind binding combined with a v-on listener that emits update:x event ins
     filename = `template.vue.html`,
     scopeId = null,
     optimizeImports = false,
-    runtimeGlobalName = `VueDev`,
+    runtimeGlobalName = `Vue`,
     runtimeModuleName = `vue`,
     ssrRuntimeModuleName = "vue/server-renderer",
     ssr = false,

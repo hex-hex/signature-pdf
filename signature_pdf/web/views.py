@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-# Create your views here.
+
+class DemoSignatureView(TemplateView):
+    template_name = 'demo/signature.html'
