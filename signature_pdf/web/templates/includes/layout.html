@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="author" content="CFG GLOBAL"/>
+    <meta name="description" content="CFG CRM V4">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}CFG CRM V4{% endblock %}</title>
+    {% block extra_css %}
+    {% endblock %}
+    {% include 'includes/css.html' %}
+    <script src="{% static 'js/vue.dev.js' %}"></script>
+    {#    {% if DEBUG %}#}
+    {#        <script src="{% static 'js/vue.dev.js' %}"></script>#}
+    {#    {% else %}#}
+    {#        <script src="{% static 'js/vue.prod.js' %}"></script>#}
+    {#    {% endif %}#}
+</head>
+<body>
+{% block raw_contents %}
+    <div id="layout-wrapper">
+        <div class="p-4">
+            {% block contents %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    {#    <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>#}
+    {#    <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>#}
+    {#    <script src="{% static 'libs/metismenu/dist/metisMenu.min.js' %}"></script>#}
+    {#    <script src="{% static 'libs/simplebar/dist/simplebar.min.js' %}"></script>#}
+    {#    <script src="{% static 'libs/node-waves/dist/waves.min.js' %}"></script>#}
+    {#    <script src="{% static 'js/app.js' %}"></script>#}
+{% endblock %}
+{% block extra_javascript %}
+{% endblock %}
+</body>
+</html>

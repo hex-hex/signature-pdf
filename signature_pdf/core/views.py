@@ -70,9 +70,9 @@ def thumbnail_attachment_view(request: HttpRequest, slug: str):
 
 def deep_preview_pdf(attachment: Attachment):
     storage = DefaultStorage()
-    with storage.open(attachment.path.name, 'rb') as pdf_file:
-        pdf_data = pdf_file.read()
-        pdf_file = fitz.Document(stream=pdf_data, filetype='pdf')
+    with storage.open(attachment.path.name, 'rb') as f:
+        pdf_data = f.read()
+        pdf_file: fitz.Document = fitz.Document(stream=pdf_data, filetype='pdf')
         for page in pdf_file.pages():
             return page.get_pixmap().pil_tobytes(format='png', optimize=True)
 
