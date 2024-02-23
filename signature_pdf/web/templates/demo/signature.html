@@ -4,15 +4,9 @@
 {% block contents %}
     <div class="container" id="signaturePadDemo">
         <div class="row">
-            <signature-module>
-            </signature-module>
-        </div>
-        <div class="row">
             <div class="col-md-12 text-center">
                 <h1>Sign the document</h1>
                 <p>Sign the document below to confirm your agreement.</p>
-                <canvas id="signaturePad" class="signature-pad rounded-4">
-                </canvas>
             </div>
         </div>
         <div class="row">
@@ -20,6 +14,9 @@
                 <div class="d-grid gap-3 d-md-flex justify-content-md-center">
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <signature-module></signature-module>
         </div>
     </div>
 {% endblock %}
