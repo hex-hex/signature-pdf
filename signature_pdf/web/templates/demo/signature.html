@@ -4,6 +4,10 @@
 {% block contents %}
     <div class="container" id="signaturePadDemo">
         <div class="row">
+            <signature-module>
+            </signature-module>
+        </div>
+        <div class="row">
             <div class="col-md-12 text-center">
                 <h1>Sign the document</h1>
                 <p>Sign the document below to confirm your agreement.</p>
@@ -14,9 +18,6 @@
         <div class="row">
             <div class="col">
                 <div class="d-grid gap-3 d-md-flex justify-content-md-center">
-                    <button id="clear" @click="clearSignature" class="btn btn-danger">Clear</button>
-                    <button id="undo" @click="undoSignature" class="btn btn-warning">Undo</button>
-                    <button id="save" @click="saveSignature" class="btn btn-success">Save</button>
                 </div>
             </div>
         </div>
@@ -24,58 +25,15 @@
 {% endblock %}
 
 {% block extra_javascript %}
+    {% include 'components/signature_module.html' %}
     <script src="{% static 'js/signature_pad.js' %}"></script>
     <script>
         Vue.createApp({
             delimiters: ['[[', ']]'],
+            components: {
+                'signature-module': signatureModule,
+            },
             setup() {
-                let signaturePad
-                Vue.onMounted(() => {
-                    let canvas = document.getElementById('signaturePad');
-                    {#const ratio = Math.max(window.devicePixelRatio || 1, 1);#}
-                    {#canvas.width = canvas.offsetWidth;#}
-                    {#canvas.height = canvas.offsetHeight;#}
-                    {#canvas.getContext("2d").scale(ratio, ratio);#}
-
-                    signaturePad = new SignaturePad(canvas, {
-                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                        penColor: 'black',
-                    })
-
-                    signaturePad.clear();
-                })
-
-                const clearSignature = () => {
-                    signaturePad.clear();
-                }
-                const undoSignature = () => {
-                    let data = signaturePad.toData();
-                    if (data) {
-                        data.pop();
-                        signaturePad.fromData(data);
-                    }
-                }
-                const saveSignature = () => {
-                    if (signaturePad.isEmpty()) {
-                        alert("Please provide a signature first.");
-                    } else {
-                        let data = signaturePad.toDataURL('image/png');
-                        let xhr = new XMLHttpRequest();
-                        xhr.open("POST", "/save-signature/", true);
-                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        xhr.send("img=" + data);
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === 4 && xhr.status === 200) {
-                                {#window.location.href = "/thank-you/";#}
-                            }
-                        }
-                    }
-                }
-                return {
-                    clearSignature,
-                    undoSignature,
-                    saveSignature
-                }
             }
         }).mount('#signaturePadDemo');
 

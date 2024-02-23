@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('web/', include('signature_pdf.web.urls')),
+    path('api/', include('signature_pdf.core.urls')),
 ]

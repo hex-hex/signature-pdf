@@ -9,8 +9,8 @@ class Attachment(models.Model):
     slug = models.SlugField(default=generate_slug, unique=True, db_index=True)
     path = models.FileField()
     original_name = models.CharField(max_length=254)
-    active = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    # active = models.BooleanField(default=True, db_index=True)
     # created_by = models.ForeignKey(Operator, models.SET_NULL, null=True)
 
     def __str__(self):

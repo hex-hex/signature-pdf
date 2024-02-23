@@ -1,0 +1,105 @@
+<template id="signatureModule">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" @click="showSignatureModal">
+        Sign Here
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="signatureModal" tabindex="-1" aria-labelledby="signatureModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="signatureModalLabel">Leave your signature below:</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <canvas id="signaturePad" class="signature-pad rounded-4" :hidden="canvasHidden">
+                    </canvas>
+                </div>
+                <div class="modal-footer">
+                    <button id="clear" @click="clearSignature" class="btn btn-danger">Clear</button>
+                    <button id="undo" @click="undoSignature" class="btn btn-warning">Undo</button>
+                    <button id="confirm" @click="saveSignature" class="btn btn-success">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    const signatureModule = {
+        template: '#signatureModule',
+        delimiters: ['[[', ']]'],
+        setup() {
+            let signaturePad
+            const canvasHidden = Vue.ref(true)
+
+            const resizeCanvas = () => {
+                const canvas = document.getElementById('signaturePad')
+                const parentContainer = canvas.parentNode
+                const width = parentContainer.offsetWidth
+                console.log(width)
+                canvas.width = width - 30
+                canvas.height = width * 0.5
+                if (signaturePad) signaturePad.clear()
+                canvasHidden.value = false
+            }
+
+            const showSignatureModal = () => {
+                $('#signatureModal').modal('show')
+                setTimeout(resizeCanvas, 250)
+            }
+
+            Vue.onMounted(() => {
+                signaturePad = new SignaturePad(document.getElementById('signaturePad'),
+                    {
+                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                        penColor: 'black',
+                    })
+                window.addEventListener('resize', resizeCanvas);
+            })
+
+            const clearSignature = () => {
+                resizeCanvas()
+            }
+
+            const undoSignature = () => {
+                let data = signaturePad.toData();
+                if (data) {
+                    data.pop();
+                    signaturePad.fromData(data);
+                }
+            }
+
+            const saveSignature = () => {
+                if (signaturePad.isEmpty()) {
+                    alert("Please provide a signature first.");
+                } else {
+                    const data = signaturePad.toDataURL('image/png')
+                    let bodyFormData = new FormData()
+                    bodyFormData.append('img', data)
+                    axios.post('{% url "signature" %}', bodyFormData,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        })
+                        .then(response => {
+                            console.log(response)
+                            signaturePad.clear()
+                        })
+                        .catch(error => {
+                            alert("An error occurred while saving the signature.")
+                            console.log(error)
+                        })
+                }
+            }
+            return {
+                showSignatureModal,
+                canvasHidden,
+                clearSignature,
+                undoSignature,
+                saveSignature
+            }
+        }
+    }
+</script>
