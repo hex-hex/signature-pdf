@@ -26,6 +26,16 @@ class AttachmentSerializer(serializers.ModelSerializer):
         fields = ['slug', 'original_name', 'download_url', 'thumbnail_url', 'size']
 
 
+@api_view(['GET', ])
+def download_attachment_view(request: HttpRequest, slug: str):
+    if request.method != 'GET':
+        return HttpResponseNotAllowed(['GET'])
+    attachment = Attachment.objects.get(slug=slug)
+    file_response = FileResponse(attachment.path)
+    file_response['Content-Disposition'] = 'attachment; filename=' + attachment.original_name
+    return file_response
+
+
 @api_view(['POST', ])
 # @permission_classes([IsOperator, ])
 def upload_attachment_view(request: HttpRequest):
@@ -33,7 +43,8 @@ def upload_attachment_view(request: HttpRequest):
         return HttpResponseNotAllowed(['POST'])
     try:
         file = request.FILES['file']
-        path = upload_file_path(file.name)
+        _, file_extension = os.path.splitext(file.name)
+        path = upload_file_path(file_extension)
         default_storage.save(path, file)
         attachment = Attachment(path=path,
                                 original_name=file.name,
@@ -75,19 +86,6 @@ def deep_preview_pdf(attachment: Attachment):
         pdf_file: fitz.Document = fitz.Document(stream=pdf_data, filetype='pdf')
         for page in pdf_file.pages():
             return page.get_pixmap().pil_tobytes(format='png', optimize=True)
-
-
-@api_view(['GET', ])
-# @permission_classes([IsOperator, ])
-def download_attachment_view(request: HttpRequest, slug: str):
-    if request.method != 'GET':
-        return HttpResponseNotAllowed(['GET'])
-    # if not hasattr(request.user, 'operator'):
-    #     return HttpResponseForbidden()
-    attachment = Attachment.objects.get(slug=slug)
-    file_response = FileResponse(attachment.path)
-    file_response['Content-Disposition'] = 'attachment; filename=' + attachment.original_name
-    return file_response
 
 
 @api_view(['GET', ])
